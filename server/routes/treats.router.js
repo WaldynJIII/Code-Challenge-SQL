@@ -4,8 +4,8 @@ const pool = require('../modules/pool');
 
 // GET /treats
 treatsRouter.get('/', (req, res) => {
-    console.log('GET route was hit');
-    pool.query('SELECT * FROM "treats";')
+    console.log('GET route was hit', req.query);
+    pool.query(`SELECT * FROM "treats" WHERE "name"=$1;`,[req.query.q])
         .then((results) => {
             console.log(results.rows)
             res.send(results.rows);
@@ -14,6 +14,7 @@ treatsRouter.get('/', (req, res) => {
             res.sendStatus(500);
         });
 });
+
 // POST /treats
 treatsRouter.post('/', (req, res) => {
     console.log('post route was hit', req.body);
