@@ -20,7 +20,7 @@ treatsRouter.post('/', (req, res) => {
     let queryText = `INSERT INTO "treats"("name", "description", "pic")
     VALUES($1, $2, $3);`;
 
-    pool.query(queryText, [req.body.description, req.body.motivation])
+    pool.query(queryText, [req.body.name, req.body.description, req.body.pic])
         .then(() => {
             res.sendStatus(200);
         }).catch((error) => {
