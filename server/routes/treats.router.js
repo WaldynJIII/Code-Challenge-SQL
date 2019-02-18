@@ -24,12 +24,35 @@ treatsRouter.post('/', (req, res) => {
         .then(() => {
             res.sendStatus(200);
         }).catch((error) => {
-            console.log('error with koala insert:', error);
+            console.log('error with insert:', error);
             res.sendStatus(500);
         });
 });
 // PUT /treats/<id>
+treatsRouter.put('/:id', (req, res) => {
+    console.log('in put request');
+    console.log('req.params', req.body);
 
+
+    pool.query(`UPDATE "treats" SET "description" = $2 
+    WHERE "id" = $1;`, [req.params.id, req.body.description])
+        .then(() => {
+            res.sendStatus(204);
+        }).catch((error) => {
+            res.sendStatus(500);
+        });
+})
 // DELETE /treats/<id>
+treatsRouter.delete('/:id', (req, res) => {
+    console.log('/list DELETE request was hit');
+    console.log('req.params', req.params);
+    pool.query(`DELETE FROM "treats" WHERE "id"=$1;`, [req.params.id])
+        .then(() => {
+            res.sendStatus(204);
+        }).catch(error => {
+            console.log('there was an error on the delete query', error);
 
+            res.sendStatus(500);
+        });
+});
 module.exports = treatsRouter;
